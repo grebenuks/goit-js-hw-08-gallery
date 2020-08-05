@@ -22,17 +22,26 @@ refs.backdrop.addEventListener("click", closeBackdrop);
 
 function openModal(e) {
   e.preventDefault();
+  if (e.target.nodeName !== "IMG") return; // проверка
   refs.modalBox.classList.add("is-open");
-
   refs.lightboxImage.src = e.target.getAttribute("data-source");
+  window.addEventListener("keyup", escapeClose);
 }
 
 function closeModal() {
   refs.modalBox.classList.remove("is-open");
   refs.lightboxImage.src = "";
+  window.removeEventListener("keyup", escapeClose);
 }
 
 function closeBackdrop() {
-  refs.modalBox.classList.remove("is-open");
-  refs.lightboxImage.src = "";
+  if (event.target === event.currentTarget) {
+    closeModal();
+  }
+}
+
+function escapeClose() {
+  if (event.key === "Escape") {
+    closeModal();
+  }
 }
